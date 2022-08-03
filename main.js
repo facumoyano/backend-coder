@@ -1,39 +1,23 @@
-const express = require('express')
-const Contenedor = require('./Contenedor.js');
+const express = require("express");
+const path = require("path");
+const productsRouter = require("./routes/products");
 
-const app = express()
+const app = express();
 
-const PORT = 8080
-
-let contenedor = new Contenedor("contenedor");
-
+const PORT = 8080;
 
 const server = app.listen(PORT, () => {
-    console.log(`Servidor http escuchando en el puerto ${server.address().port}`);
-})
-server.on('error', error => console.log(`error ${error}`))
+    console.log(
+        `Servidor http escuchando en el puerto ${server.address().port}`
+    );
+});
+server.on("error", (error) => console.log(`error ${error}`));
 
-app.get('/', (req, res) => {
-    res.send({
-        Ingrese: '/productos o /productosRandom'
-    })
-})
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.get('/productos', (req, res) => {
-    (async () => {
-        await contenedor.getAll().then((response) => {
-            res.send(response);
-        });
-    })();
-})
+app.get("/", function (req, res) {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 
-app.get('/productoRandom', (req, res) => {
-    (async () => {
-        await contenedor.getAll().then((response) => {
-            let random = Math.floor(Math.random() * response.length);
-            res.send(response[random]);
-        });
-    })();
-})
-
-
+app.use("/api/productos", productsRouter);

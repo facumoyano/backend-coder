@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('../partials/head'); %>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/public/index.js"></script>
+    </head>
+    <body>
+        <%- include('../partials/navbar'); %>
+        <form class="form" id="formProducts">
+            <h1 class="title-form">Ingresa un producto</h1>
+            <input
+                type="text"
+                name="nombre"
+                placeholder="Ingresa un producto"
+                id="nombre"
+            />
+            <input
+                type="number"
+                name="precio"
+                placeholder="Ingresa un precio"
+                id="precio"
+            />
+            <input
+                type="text"
+                name="imgUrl"
+                placeholder="Ingresa una url de imagen"
+                id="imgUrl"
+            />
+            <button type="button" onclick="addProduct(formProducts)">
+                Enviar
+            </button>
+        </form>
+        <h1 class="title-products">Lista de productos</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Foto</th>
+                </tr>
+            </thead>
+            <tbody id="productos"></tbody>
+        </table>
+        <%- include('../partials/formChat'); %>
+    </body>
+</html>

@@ -1,4 +1,5 @@
 const fs = require("fs");
+const { v4: uuidv4 } = require("uuid");
 
 class Contenedor {
     constructor(archivo) {
@@ -34,9 +35,12 @@ class Contenedor {
             let contenidoDeArchivo = await this.getData();
             let contenidoEnJSON = JSON.parse(contenidoDeArchivo);
             let arreglo = [];
+            let timestamp = Date.now();
             const indice = contenidoEnJSON.map((x) => x.id).sort();
 
             objeto.id = indice[indice.length - 1] + 1;
+            objeto.timestamp = timestamp;
+            objeto.codigo = uuidv4();
 
             if (!objeto.id) {
                 objeto.id = 1;
@@ -53,6 +57,45 @@ class Contenedor {
                 this.archivo,
                 JSON.stringify(contenidoEnJSON)
             );
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async createCart() {
+        try {
+            let data = await fs.promises.readFile(this.archivo, "utf-8");
+            let parseData = await JSON.parse(data);
+            let timestamp = Date.now();
+            let cart = {
+                id: parseData.length + 1 || 1,
+                timestamp: timestamp,
+                productos: [],
+            };
+            parseData.push(cart);
+            await fs.promises.writeFile(
+                this.archivo,
+                JSON.stringify(parseData)
+            );
+            return cart;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async addProductToCart(id, product) {
+        try {
+            let data = await fs.promises.readFile(this.archivo, "utf-8");
+            let parseData = await JSON.parse(data);
+            let cart = parseData.find((x) => x.id == id);
+            product.id = cart.productos.length + 1 || 1;
+            product.timestamp = Date.now();
+            cart.productos.push(product);
+            await fs.promises.writeFile(
+                this.archivo,
+                JSON.stringify(parseData)
+            );
+            return cart;
         } catch (error) {
             console.log(error);
         }
@@ -88,6 +131,28 @@ class Contenedor {
                 console.log("el objeto fue eliminado");
                 return parseData;
             }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async deleteByIdProductCart(id, productId) {
+        try {
+            let data = await fs.promises.readFile(this.archivo, "utf-8");
+            let parseData = await JSON.parse(data);
+            let itemFind = await this.getById(id);
+
+            const product = parseData.map((item) => {
+                if (item.id === itemFind.id) {
+                    item.productos = item.productos.filter(
+                        (product) => product.id !== productId
+                    );
+                    return item;
+                } else {
+                    return item;
+                }
+            });
+            fs.promises.writeFile(this.archivo, JSON.stringify(product));
         } catch (error) {
             console.error(error);
         }

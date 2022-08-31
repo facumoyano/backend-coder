@@ -1,0 +1,25 @@
+[
+    {
+        "id": 1,
+        "timestamp": 1661901261653,
+        "productos": [
+            {
+                "nombre": "Celular",
+                "precio": 500,
+                "imgUrl": "https://images.fravega.com/f300/5d01c9d51a16dcbd97566d776b64152d.jpg.webp",
+                "stock": 6,
+                "id": 1,
+                "timestamp": 1661901376128
+            },
+            {
+                "nombre": "TV",
+                "precio": 1000,
+                "imgUrl": "https://images.fravega.com/f300/f5d647127053614f51056fff718ca224.jpg.webp",
+                "stock": 10,
+                "codigo": "317602ca-f67a-4e51-8a99-fd8bc03e3535",
+                "id": 2,
+                "timestamp": 1661901416491
+            }
+        ]
+    }
+]

@@ -4,7 +4,7 @@ const Contenedor = require("../Contenedor");
 
 const router = express.Router();
 
-let contenedor = new Contenedor("contenedor");
+let contenedor = new Contenedor("productos");
 
 router.get("/", (req, res) => {
     (async () => {
